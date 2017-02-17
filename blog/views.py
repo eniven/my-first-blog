@@ -1,5 +1,9 @@
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Post
+# the . before models means from current directory
 
 def post_list(request):
     #takes a request and returns a function render that will put together our template.
-    return render(request, 'blog/post_list.html', {})
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/post_list.html', {'posts' : posts})
